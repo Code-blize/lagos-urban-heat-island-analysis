@@ -1,2 +1,1 @@
-# lagos-urban-heat-island-analysis
-Geospatial analysis of urban heat island patterns in Lagos using satellite imagery, Google Earth Engine, and ArcGIS.
+This project explores the evolution of urban heat island patterns in Lagos, Nigeria, using satellite imagery, Google Earth Engine, and ArcGIS. It combines geospatial analysis, climate data interpretation, and visual storytelling to identify heat intensity patterns and highlight the environmental impact of urban growth.
