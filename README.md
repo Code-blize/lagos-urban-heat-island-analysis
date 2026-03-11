@@ -218,9 +218,9 @@ GitHub repository. https://github.com/Code-blize/Lagos-UHI-Analysis
 
 ---
 
-## **2. .gitignore**
+2. .gitignore
 
-**Create this file to exclude large/unnecessary files:**
+Create this file to exclude large/unnecessary files:
 ```
 # Large data files
 *.tif
@@ -254,11 +254,9 @@ credentials.json
 temp/
 ```
 
----
+ 3. LICENSE
 
-## **3. LICENSE**
-
-**Use MIT License (most common for open-source):**
+Use MIT License (most common for open-source):
 ```
 MIT License
 
