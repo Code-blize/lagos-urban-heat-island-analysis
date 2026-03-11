@@ -19,7 +19,7 @@ A geospatial analysis quantifying urban heat island (UHI) intensification in Lag
 
 ---
 
-## 📖 Table of Contents
+##  Table of Contents
 
 - [Motivation](#motivation)
 - [Data Sources](#data-sources)
