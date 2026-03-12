@@ -3,7 +3,7 @@
 Due to GitHub file size limits, the processed data is hosted on Google Drive.
 
 ## Files Available
-
+ 
 ### Land Surface Temperature (LST)
 1. **Lagos_LST_2014.tif** (77 MB)
    - [Download](https://drive.google.com/file/d/1SrCiNa91BMNycYMPv_vsEOhUZfwp2Yjk/view?usp=drivesdk)
