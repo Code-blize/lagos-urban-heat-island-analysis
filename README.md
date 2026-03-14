@@ -1,262 +1,282 @@
 # Urban Heat Island Analysis: Lagos, Nigeria (2014-2024)
 
-[![Story Map](https://img.shields.io/badge/Story%20Map-View%20Interactive-blue)](https://arcg.is/0OfaGP0)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+Satellite-based geospatial analysis quantifying urban heat island intensification in Africa's fastest-growing megacity.
 
-##  Project Overview
-
-A geospatial analysis quantifying urban heat island (UHI) intensification in Lagos, Nigeria over a 10-year period (2014-2024) using satellite remote sensing and GIS.
-
-**Key Findings:**
-- Average temperature increase: **1.84°C** (2014-2024)
-- Peak urban temperatures: **50.47°C** (2024)
-- Vegetation loss: **48.6%** reduction in healthy green space
-- Population at risk: **8.2 million** residents exposed to extreme heat (>35°C)
-
- **[View Interactive Story Map](https://arcg.is/0OfaGP0)**
-
-![Temperature Change Map](outputs/figures/temperature_change_map.png)
+**[→ View Interactive Story Map](https://arcg.is/0OfaGP0)**
 
 ---
 
-##  Table of Contents
+## Overview
 
-- [Motivation](#motivation)
-- [Data Sources](#data-sources)
-- [Methodology](#methodology)
-- [Results](#results)
-- [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
-- [How to Use](#how-to-use)
-- [Future Work](#future-work)
-- [Acknowledgments](#acknowledgments)
-- [Contact](#contact)
+This project analyzes land surface temperature changes in Lagos, Nigeria over a decade (2014-2024) using Landsat satellite imagery and Google Earth Engine.
 
----
-
-##  Motivation
-
-Lagos is Africa's fastest-growing megacity with over 15 million residents. Rapid urbanization has transformed the city's thermal landscape, creating dangerous heat conditions for vulnerable populations. This project provides empirical evidence for climate adaptation planning and urban policy reform.
-
-**Research Questions:**
-1. How have land surface temperatures changed in Lagos between 2014 and 2024?
-2. What is the relationship between urban development and temperature increases?
-3. Which populations face the greatest heat-related vulnerabilities?
-
----
-
-##  Data Sources
-
-| Dataset | Source | Resolution | Time Period |
-|---------|--------|------------|-------------|
-| Landsat 8 (C2L2) | USGS Earth Explorer | 30m (thermal: 100m) | Jan 2014 |
-| Landsat 9 (C2L2) | USGS Earth Explorer | 30m (thermal: 100m) | Jan 2024 |
-| World Population | Esri Living Atlas | 100m | 2024 |
-| Admin Boundaries | HDX | Vector | 2024 |
-
-**Study Area:** Lagos State, Nigeria  
-**Geographic Extent:** 2.8°E to 3.8°E, 6.2°N to 6.8°N  
-**Area:** ~3,500 km²
-
----
-
-##  Methodology
-
-### 1. Data Acquisition
-- Accessed Landsat Collection 2 Level-2 Surface Reflectance via Google Earth Engine
-- Applied cloud masking using QA_PIXEL band
-- Filtered for dry season (January) to minimize cloud cover
-
-### 2. Land Surface Temperature (LST) Calculation
-```javascript
-// Thermal band processing
-var LST = thermal.select('ST_B10')
-  .multiply(0.00341802).add(149.0)  // Scale and offset
-  .subtract(273.15);  // Convert Kelvin to Celsius
-```
-
-### 3. Vegetation Analysis
-- Calculated NDVI: (NIR - Red) / (NIR + Red)
-- Classified vegetation health (NDVI > 0.5 = healthy)
-
-### 4. Change Detection
-- Computed temporal differences (2024 - 2014)
-- Identified hotspot zones (ΔT > 3°C)
-
-### 5. Vulnerability Assessment
-- Overlaid temperature with population density
-- Identified high-risk zones (high temp + high density)
-
-**Full methodology:** [docs/methodology.md](docs/methodology.md)
-
----
-
-##  Results
-
-### Temperature Trends
+### Key Findings
 
 | Metric | 2014 | 2024 | Change |
 |--------|------|------|--------|
-| Mean Temp (°C) | 30.89 | 32.73 | **+1.84** |
-| Max Temp (°C) | 45.77 | 50.47 | **+4.70** |
-| Min Temp (°C) | 25.58 | 27.80 | +2.22 |
+| Mean Temperature | 30.89°C | 32.73°C | **+1.84°C** |
+| Max Temperature | 45.77°C | 50.47°C | **+4.70°C** |
+| Min Temperature | 25.58°C | 27.80°C | +2.22°C |
+
+**Additional findings:**
+-  48.6% reduction in healthy vegetation coverage
+-  Urban hotspots reaching 50°C+
+-  8.2 million residents exposed to extreme heat (>35°C)
+-  Strong correlation (r = -0.78) between vegetation loss and warming
+
+---
+
+## Study Area
+
+**Location:** Lagos State, Nigeria  
+**Coordinates:** 2.8°E to 3.8°E, 6.2°N to 6.8°N  
+**Area:** ~3,500 km²  
+**Population:** 15+ million (2024)
+
+---
+
+## Data Sources
+
+| Dataset | Source | Resolution | Period |
+|---------|--------|------------|--------|
+| Landsat 8 Surface Reflectance | USGS Earth Explorer | 30m | January 2014 |
+| Landsat 9 Surface Reflectance | USGS Earth Explorer | 30m | January 2024 |
+| World Population Estimate | Esri Living Atlas | 100m | 2024 |
+
+---
+
+## Methodology
+
+### 1. Data Acquisition
+- Accessed Landsat Collection 2 Level-2 imagery via Google Earth Engine
+- Applied cloud masking using QA_PIXEL band
+- Selected dry season (January) to minimize cloud interference
+
+### 2. Temperature Analysis
+- Processed thermal infrared band (ST_B10)
+- Converted digital numbers to Land Surface Temperature (°C)
+- Generated temperature maps for 2014 and 2024
+- Calculated temporal change (2024 - 2014)
+
+### 3. Vegetation Analysis
+- Calculated NDVI: (NIR - Red) / (NIR + Red)
+- Identified healthy vegetation (NDVI > 0.5)
+- Assessed vegetation loss over 10-year period
+
+### 4. Vulnerability Assessment
+- Overlaid temperature data with population density
+- Identified high-risk zones (high temp + high population)
+- Quantified population exposure to extreme heat
+
+**Detailed methodology:** See [docs/methodology.md](docs/methodology.md)
+
+---
+
+## Results
+
+### Temperature Hotspots
+
+**Areas with highest warming (2014-2024):**
+
+1. **Lekki Peninsula:** +3.5 to 5.0°C
+   - Primary driver: Rapid residential/commercial development
+   
+2. **Ikorodu Corridor:** +3.0 to 4.5°C
+   - Primary driver: Industrial expansion
+   
+3. **Mainland Commercial Districts:** +2.5 to 4.0°C
+   - Primary driver: Increased building density
 
 ### Vegetation Loss
-- 2014 healthy vegetation coverage: **35%** of study area
-- 2024 healthy vegetation coverage: **18%** of study area  
-- **Loss: 48.6%**
 
-### Hotspot Zones
-1. **Lekki Peninsula:** +3.5-5.0°C (residential development)
-2. **Ikorodu Corridor:** +3.0-4.5°C (industrial expansion)
-3. **Mainland Districts:** +2.5-4.0°C (building density)
+- **2014:** 35% of study area had healthy vegetation
+- **2024:** 18% of study area has healthy vegetation
+- **Net loss:** 48.6% reduction
 
-**Detailed results:** [docs/results.md](docs/results.md)
+Areas with greatest vegetation loss showed highest temperature increases.
 
----
+### Population Impact
 
-##  Technologies Used
+- **8.2 million people** (54.7% of Lagos) live in zones exceeding 35°C
+- Vulnerable communities lack cooling infrastructure
+- Strong correlation between development patterns and heat exposure
 
-- **Google Earth Engine** - Satellite data processing (JavaScript API)
-- **ArcGIS Online** - Spatial analysis & web mapping
-- **ArcGIS StoryMaps** - Interactive presentation
-- **Landsat 8/9** - Thermal infrared & multispectral imagery
-- **Python** (optional) - Data analysis & visualization
+**Full results:** See [docs/results.md](docs/results.md)
 
 ---
 
-##  Project Structure
+## Technologies
+
+- **Google Earth Engine** - Cloud-based satellite data processing
+- **Landsat 8/9** - Thermal infrared and multispectral imagery
+- **ArcGIS Online** - Spatial analysis and web mapping
+- **ArcGIS StoryMaps** - Interactive visualization
+
+---
+
+## Repository Contents
 ```
-├── data/              # GeoTIFF files, metadata
-├── code/              # Google Earth Engine scripts
-├── outputs/           # Maps, statistics, figures
-├── docs/              # Documentation
-└── README.md          # This file
+├── data/
+│   ├── processed/          # Download links for GeoTIFF files
+│   └── metadata/           # Data specifications
+├── code/
+│   └── lagos_uhi_analysis.js    # Google Earth Engine script
+├── outputs/
+│   ├── figures/            # Map visualizations
+│   └── statistics/         # Summary statistics
+├── docs/
+│   ├── methodology.md      # Detailed methods
+│   └── results.md          # Complete findings
+└── README.md               # This file
 ```
 
 ---
 
-##  How to Use
+## Access the Data
 
-### View the Project
-**Interactive Story Map:** [https://arcg.is/0OfaGP0](https://arcg.is/0OfaGP0)
+Processed GeoTIFF files (77 MB each) are too large for GitHub.
+
+**Download data:** See [data/processed/README.md](data/processed/README.md)
+
+Files available:
+- Land Surface Temperature (2014, 2024, Change)
+- NDVI Vegetation Index (2014, 2024, Change)
+
+---
+
+## How to Use
+
+### View the Analysis
+**Interactive Story Map:** https://arcg.is/0OfaGP0
 
 ### Reproduce the Analysis
 
-**1. Clone the repository:**
-```bash
-git clone https://github.com/Code-blize/Lagos-Urban-Heat-Island-Analysis.git
-cd Lagos-Urban-Heat-Island-Analysis
+**Prerequisites:**
+- Google Earth Engine account: [Sign up](https://earthengine.google.com/)
+- Basic knowledge of JavaScript and remote sensing
+
+**Steps:**
+1. Clone this repository
+2. Open `code/lagos_uhi_analysis.js`
+3. Copy script to [Google Earth Engine Code Editor](https://code.earthengine.google.com/)
+4. Modify study area bounds if needed
+5. Run script and export results
+
+### Use the Data
+
+**For GIS analysis:**
+1. Download GeoTIFF files from links in `data/processed/`
+2. Load into ArcGIS Pro, ArcGIS Online, or QGIS
+3. Apply symbology as described in documentation
+
+**For programming:**
+```python
+import rasterio
+
+# Example: Read temperature data
+with rasterio.open('Lagos_LST_2024.tif') as src:
+    temperature = src.read(1)
+    print(f"Mean: {temperature.mean():.2f}°C")
 ```
 
-**2. Access Google Earth Engine:**
-- Sign up: [https://earthengine.google.com/](https://earthengine.google.com/)
-- Open Code Editor: [https://code.earthengine.google.com/](https://code.earthengine.google.com/)
+---
 
-**3. Run the scripts:**
-- Copy code from `code/01_data_acquisition.js`
-- Paste into GEE Code Editor
-- Modify study area bounds if needed
-- Run and export results
+## Key Insights
 
-**4. Download processed data:**
-- GeoTIFF files available in `data/processed/`
-- Load into ArcGIS Online or QGIS
+### Climate Impact
+- Lagos warming faster than global average
+- Urban areas show amplified temperature increases
+- Heat stress poses serious public health risks
+
+### Urban Development
+- Direct correlation between development and warming
+- Vegetation loss eliminates natural cooling
+- Green infrastructure critical for climate adaptation
+
+### Social Vulnerability
+- Majority of Lagos residents exposed to extreme heat
+- Vulnerable communities lack cooling resources
+- Climate adaptation must prioritize equity
 
 ---
 
-##  Future Work
+## Policy Recommendations
 
-- [ ] Seasonal analysis (wet vs dry season comparison)
-- [ ] Integration with socioeconomic vulnerability indices
-- [ ] Predictive modeling (future temperature scenarios)
-- [ ] Expansion to other West African cities
-- [ ] Real-time monitoring dashboard
-- [ ] Ground-truthing with field temperature sensors
+**Immediate Actions:**
+- Mandate 30% minimum green space in new developments
+- Launch city-wide tree planting program
+- Establish heat wave early warning system
+- Create public cooling centers
+
+**Long-term Strategies:**
+- Implement cool pavement and reflective materials
+- Protect remaining vegetated areas
+- Update building codes for passive cooling
+- Continuous satellite-based monitoring
+
+**Full recommendations:** [docs/recommendations.md](docs/recommendations.md)
 
 ---
 
-##  Acknowledgments
+## Project Status
 
-- **Philippa Burgess** - Mentorship and guidance (GeoCyber Systems LLC)
-- **Women+ in Geospatial** - Community support and opportunities
-- **Sambus Geospatial Nigeria** - Esri Young Scholar Awards platform
+**Completed:** February 2026  
+**Submitted to:** Esri Young Scholar Awards 2026 (Sambus Geospatial Nigeria)
+
+---
+
+## Author
+
+**Blessing Obasi-Uzoma**
+
+- 📧 Email: blessingobasiuzoma@gmail.com
+- 💼 LinkedIn: [linkedin.com/in/blessingobasiuzoma](https://linkedin.com/in/blessingobasiuzoma)
+- 🐙 GitHub: [@Code-blize](https://github.com/Code-blize)
+- 🗺️ Portfolio: [Story Map](https://arcg.is/0OfaGP0)
+
+---
+
+## Acknowledgments
+
+- **Philippa Burgess** - Mentorship (GeoCyber Systems LLC)
+- **Women+ in Geospatial** - Community support
+- **Sambus Geospatial Nigeria** - Competition platform
 - **USGS** - Free Landsat imagery
-- **Esri** - ArcGIS Online and training resources
-
-**Submitted to:** Esri Young Scholar Awards 2026
+- **Esri** - ArcGIS platform and training
 
 ---
 
-##  Contact
+## License
 
-**Blessing Obasi-Uzoma**  
- Email: blessingobasiuzoma@gmail.com  
- LinkedIn: [linkedin.com/in/blessingobasiuzoma](https://linkedin.com/in/blessingobasiuzoma)  
- Portfolio: [Story Map](https://arcg.is/0OfaGP0)
+MIT License - See [LICENSE](LICENSE) file
 
 ---
 
-##  License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-##  Citation
+## Citation
 
 If you use this work, please cite:
 ```
 Obasi-Uzoma, B. (2026). Urban Heat Island Analysis: Lagos, Nigeria (2014-2024). 
-GitHub repository. https://github.com/Code-blize/Lagos-UHI-Analysis
+GitHub. https://github.com/Code-blize/lagos-urban-heat-island-analysis
 ```
 
 ---
 
-**Built with 🌍 for climate-adaptive urban planning**
+## Contributing
+
+This is a completed academic project. For questions or collaboration opportunities, please contact me directly.
+
+---
+
+**Last updated:** March 2026
 ```
 
 ---
 
-2. .gitignore
+### **FILE 2: LICENSE**
 
-Create this file to exclude large/unnecessary files:
-```
-# Large data files
-*.tif
-*.zip
-*.tar.gz
-data/raw/*.tif
-
-# System files
-.DS_Store
-Thumbs.db
-*.swp
-
-# IDE
-.vscode/
-.idea/
-*.code-workspace
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-.ipynb_checkpoints/
-
-# Secrets
-.env
-credentials.json
-
-# Temporary files
-*.tmp
-*.log
-temp/
-```
-
- 3. LICENSE
-
-Use MIT License (most common for open-source):
+**Location:** Root folder  
+**Filename:** `LICENSE`
 ```
 MIT License
 
@@ -269,4 +289,76 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-[Standard MIT License text...]
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+### **FILE 3: .gitignore**
+
+**Location:** Root folder  
+**Filename:** `.gitignore`
+```
+# Large data files
+*.tif
+*.zip
+*.tar.gz
+*.7z
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+.project
+.settings/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.ipynb_checkpoints/
+
+# R
+.Rhistory
+.RData
+.Rproj.user
+
+# Secrets
+.env
+credentials.json
+*.pem
+*.key
+
+# Temporary files
+*.tmp
+*.log
+temp/
+tmp/
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
